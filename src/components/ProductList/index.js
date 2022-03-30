@@ -24,6 +24,7 @@ class ProductList extends Component {
     });
     const response = await res.json();
     const products = response;
+    console.log(products)
 
     this.setState({
       products

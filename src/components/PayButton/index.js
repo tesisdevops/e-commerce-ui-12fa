@@ -21,14 +21,6 @@ class PayButton extends Component {
 
   componentDidMount() {
     const self = this;
-    this.handler = window.StripeCheckout.configure({
-      key: config.stripe.apiKey,
-      image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-      locale: 'auto',
-      token: function (token) {
-        self.onToken(token);
-      }
-    });
   }
 
   async onToken(token) { // Token returned from Stripe
@@ -41,7 +33,6 @@ class PayButton extends Component {
       body: JSON.stringify({
         token,
         order: {
-          currency: config.stripe.currency,
           items: [
             {
               type: 'sku',
@@ -69,20 +60,20 @@ class PayButton extends Component {
   }
 
   openStripe(ev) {
-    ev.preventDefault();
+    // ev.preventDefault();
 
-    const {amount, name, caption} = this.props;
+    // const {amount, name, caption} = this.props;
 
-    this.handler.open({
-      name: "Serverless Shop",
-      description: caption,
-      zipCode: true,
-      currency: 'eur',
-      amount: amount,
-      closed: () => {
-        console.log("popup closed");
-      }
-    });
+    // this.handler.open({
+    //   name: "Serverless Shop",
+    //   description: caption,
+    //   zipCode: true,
+    //   currency: 'eur',
+    //   amount: amount,
+    //   closed: () => {
+    //     console.log("popup closed");
+    //   }
+    // });
 
   }
 
@@ -118,27 +109,29 @@ class PayButton extends Component {
         <div>
           {alreadyOrdered ?
                 <button className="btn btn-success btn-block paybutton-success-message" onClick={() => this.setState({alreadyOrdered: false})}>Vielen Dank für Deine
-                  Bestellung!</button>
+                  Una Orden</button>
               :
               <div>
-                {addedToBasket ? null : <button
+                {   addedToBasket ? null 
+                    : <button
                         onClick={() => {this.setState({addedToBasket: true}); setTimeout(() => window.scrollTo(0,document.body.scrollHeight+420), 300); }}
-                        className="btn btn-primary btn-block paybutton-add-to-basket">In den
-                      Warenkorb</button>}
+                        className="btn btn-primary btn-block paybutton-add-to-basket">
+                            Ordenar
+                      </button>}
                 {shippingInfo || !addedToBasket ? null :
                     <form onSubmit={(ev) => this.openStripe(ev)}>
-                      <p>Deine Lieferadresse</p>
+                      <p>Dirección de envio</p>
                       <div className="form-row">
                         <div className="form-group col-md-6">
                           <input type="text" className="form-control"
-                                 id="inputFirstName" placeholder="Vorname"
+                                 id="inputFirstName" placeholder="Nombre"
                                  name="firstName"
                                  onChange={this.handleInputChange}
                                  onBlur={this.handleInputChange}/>
                         </div>
                         <div className="form-group col-md-6">
                           <input type="text" className="form-control"
-                                 id="inputLastName" placeholder="Nachname"
+                                 id="inputLastName" placeholder="Apellido"
                                  name="lastName"
                                  onChange={this.handleInputChange}
                                  onBlur={this.handleInputChange}/>
@@ -148,13 +141,13 @@ class PayButton extends Component {
                         <div className="form-group col-md-8">
                           <input type="text" className="form-control"
                                  id="inputStreet"
-                                 placeholder="Strasse" name="street"
+                                 placeholder="Dirección" name="street"
                                  onChange={this.handleInputChange}
                                  onBlur={this.handleInputChange}/>
                         </div>
                         <div className="form-group col-md-4">
                           <input type="text" className="form-control"
-                                 id="inputStreetNumber" placeholder="Nr."
+                                 id="inputStreetNumber" placeholder="Numero de calle"
                                  name="streetNumber"
                                  onChange={this.handleInputChange}
                                  onBlur={this.handleInputChange}/>
@@ -164,22 +157,23 @@ class PayButton extends Component {
                         <div className="form-group col-md-4">
                           <input type="text" className="form-control"
                                  id="inputZip"
-                                 placeholder="PLZ" name="zipcode"
+                                 placeholder="Código ZIP" name="zipcode"
                                  onChange={this.handleInputChange}
                                  onBlur={this.handleInputChange}/>
                         </div>
                         <div className="form-group col-md-8">
                           <input type="text" className="form-control"
                                  id="inputCity"
-                                 placeholder="Stadt" name="city"
+                                 placeholder="Ciudad" name="city"
                                  onChange={this.handleInputChange}
                                  onBlur={this.handleInputChange}/>
                         </div>
                       </div>
                       <button disabled={!this.isValid()}
                               className="btn btn-primary btn-block paybutton-pay"
+                              onClick={() => {/*Funcionalidad para pagar*/}}
                               type="submit">
-                        Bezahlen
+                        Finalizar
                       </button>
                     </form>
                 }

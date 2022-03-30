@@ -47,10 +47,12 @@ class Product extends Component {
             <h1 className="product-caption">{caption}</h1>
             <div
                 className="product-price">
-              <div className="product-taxes">inkl MwSt.</div>
             </div>
             <p className="product-description">{description}</p>
             <hr/>
+            <PayButton disabled={false}
+                       amount={0.0} sku={skus} name={name}
+                       caption={caption}/>
             <hr/>
           </div>
         </div>
